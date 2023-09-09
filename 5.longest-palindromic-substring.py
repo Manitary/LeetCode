@@ -16,16 +16,11 @@ class Solution:
                 right -= 1
             return True
 
-        ans = ""
-        for l, _ in enumerate(s):
-            if len(s) - l < len(ans):
-                break
-            for r in range(len(s), l + len(ans), -1):
-                if is_palindrome(l, r - 1):
-                    if r - l > len(ans):
-                        ans = s[l:r]
-                    break
-        return ans
+        for length in range(len(s), 0, -1):
+            for left in range(len(s) - length + 1):
+                if is_palindrome(left, left + length - 1):
+                    return s[left : left + length]
+        raise ValueError("Answer not found")
 
 
 # @lc code=end
