@@ -6,7 +6,6 @@
 
 
 # @lc code=start
-import itertools
 
 LETTERS = {
     "1": "",
@@ -22,15 +21,18 @@ LETTERS = {
 }
 
 
-def list_to_str(l: tuple[str]) -> str:
-    return "".join(l)
+def product(*args: str) -> list[str]:
+    result: list[str] = [""]
+    for pool in args:
+        result = [x + y for x in result for y in pool]
+    return result
 
 
 class Solution:
     def letterCombinations(self, digits: str) -> list[str]:
         if not digits:
             return []
-        return list(map(list_to_str, itertools.product(*(LETTERS[d] for d in digits))))
+        return product(*(LETTERS[d] for d in digits))
 
 
 # @lc code=end
