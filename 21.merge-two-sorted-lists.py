@@ -19,29 +19,21 @@ class Solution:
     def mergeTwoLists(
         self, list1: ListNode | None, list2: ListNode | None
     ) -> ListNode | None:
-        if not (list1 or list2):
-            return
-        if not list1:
-            return list2
-        if not list2:
-            return list1
         dummy_head = ListNode()
         curr = dummy_head
-        l1p = list1
-        l2p = list2
-        while l1p or l2p:
-            if not l1p:
-                curr.next = l2p
+        while list1 or list2:
+            if not list1:
+                curr.next = list2
                 break
-            if not l2p:
-                curr.next = l1p
+            if not list2:
+                curr.next = list1
                 break
-            if l1p.val <= l2p.val:
-                curr.next = ListNode(l1p.val)
-                l1p = l1p.next
+            if list1.val <= list2.val:
+                curr.next = list1
+                list1 = list1.next
             else:
-                curr.next = ListNode(l2p.val)
-                l2p = l2p.next
+                curr.next = list2
+                list2 = list2.next
             curr = curr.next
         return dummy_head.next
 
