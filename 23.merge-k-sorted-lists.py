@@ -15,25 +15,30 @@
 #         self.next = next
 
 
-def get_val(node: ListNode | None) -> float:
-    if not node:
-        return float("inf")
-    return node.val
+def min_idx(lists: list[ListNode]) -> int:
+    best = float("inf")
+    ans = -1
+    for i, node in enumerate(lists):
+        if node.val < best:
+            ans = i
+            best = node.val
+    return ans
 
 
 class Solution:
     def mergeKLists(self, lists: list[ListNode | None]) -> ListNode | None:
+        lists = list(filter(None, lists))
         if not lists:
             return
         dummy_head = ListNode()
         curr = dummy_head
-        while any(lists):
-            values = tuple(map(get_val, lists))
-            idx = values.index(min(values))
+        while lists:
+            idx = min_idx(lists)
             curr.next = lists[idx]
             lists[idx] = lists[idx].next
+            if lists[idx] is None:
+                del lists[idx]
             curr = curr.next
-            lists = list(filter(None, lists))
         return dummy_head.next
 
 
