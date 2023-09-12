@@ -7,17 +7,20 @@
 
 # @lc code=start
 class Solution:
+    def __init__(self) -> None:
+        self.ans: list[str] = []
+
+    def recurse(self, to_open: int, to_close: int, curr: str) -> None:
+        if not to_open and not to_close:
+            self.ans.append(curr)
+        if to_open > 0:
+            self.recurse(to_open - 1, to_close + 1, curr + "(")
+        if to_close > 0:
+            self.recurse(to_open, to_close - 1, curr + ")")
+
     def generateParenthesis(self, n: int) -> list[str]:
-        ans = [(0, 0, "")]
-        for _ in range(2 * n):
-            new: list[tuple[int, int, str]] = []
-            for p in ans:
-                if p[0] < n:
-                    new.append((p[0] + 1, p[1] + 1, p[2] + "("))
-                if p[1] > 0:
-                    new.append((p[0], p[1]-1, p[2]+")"))
-            ans = new
-        return [x[2] for x in ans]
+        self.recurse(n, 0, "")
+        return self.ans
 
 
 # @lc code=end
