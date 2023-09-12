@@ -6,9 +6,8 @@
 
 
 # @lc code=start
-def threeSum(nums: list[int], target: int) -> list[list[int]]:
+def sorted_three_sum(nums: list[int], target: int) -> list[list[int]]:
     ans: list[list[int]] = []
-    nums = sorted(nums)
     for i, x in enumerate(nums):
         if x > target > 0:
             break
@@ -31,6 +30,7 @@ def threeSum(nums: list[int], target: int) -> list[list[int]]:
 
     return ans
 
+
 class Solution:
     def fourSum(self, nums: list[int], target: int) -> list[list[int]]:
         ans: list[list[int]] = []
@@ -38,10 +38,9 @@ class Solution:
         for i, x in enumerate(nums):
             if x > target > 0:
                 break
-            if i > 0 and x == nums[i-1]:
+            if i > 0 and x == nums[i - 1]:
                 continue
-            triples = threeSum(nums[i+1:], target-x)
-            ans.extend([[x] + triple for triple in triples])
+            ans.extend([[x] + t for t in sorted_three_sum(nums[i + 1 :], target - x)])
         return ans
 
 
