@@ -15,31 +15,37 @@
 #         self.next = next
 
 
-def min_idx(lists: list[ListNode]) -> int:
-    best = float("inf")
-    ans = -1
-    for i, node in enumerate(lists):
-        if node.val < best:
-            ans = i
-            best = node.val
-    return ans
+def mergeTwoLists(list1: ListNode | None, list2: ListNode | None) -> ListNode | None:
+    dummy_head = ListNode()
+    curr = dummy_head
+    while list1 or list2:
+        if not list1:
+            curr.next = list2
+            break
+        if not list2:
+            curr.next = list1
+            break
+        if list1.val <= list2.val:
+            curr.next = list1
+            list1 = list1.next
+        else:
+            curr.next = list2
+            list2 = list2.next
+        curr = curr.next
+    return dummy_head.next
 
 
 class Solution:
     def mergeKLists(self, lists: list[ListNode | None]) -> ListNode | None:
-        lists = list(filter(None, lists))
+        # lists = list(filter(None, lists))
         if not lists:
             return
-        dummy_head = ListNode()
-        curr = dummy_head
-        while lists:
-            idx = min_idx(lists)
-            curr.next = lists[idx]
-            lists[idx] = lists[idx].next
-            if lists[idx] is None:
-                del lists[idx]
-            curr = curr.next
-        return dummy_head.next
+        while len(lists) > 1:
+            lists = tuple(
+                mergeTwoLists(lists[i], lists[i + 1] if i + 1 < len(lists) else None)
+                for i in range(0, len(lists), 2)
+            )
+        return lists[0]
 
 
 # @lc code=end
