@@ -11,6 +11,8 @@ CLOSE = {")": "(", "]": "[", "}": "{"}
 
 class Solution:
     def isValid(self, s: str) -> bool:
+        if len(s) % 2:
+            return False
         active: list[str] = []
         for c in s:
             if c not in CLOSE:
