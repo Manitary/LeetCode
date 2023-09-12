@@ -5,15 +5,11 @@
 #
 
 # @lc code=start
-import re
 
 
 class Solution:
     def strStr(self, haystack: str, needle: str) -> int:
-        match = re.search(needle, haystack)
-        if not match:
-            return -1
-        return match.start()
+        return haystack.find(needle)
 
 
 # @lc code=end
