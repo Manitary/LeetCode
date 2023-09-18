@@ -8,13 +8,13 @@
 # @lc code=start
 class Solution:
     def maximalRectangle(self, matrix: list[list[str]]) -> int:
-        mat = [[1 if x == "1" else -float("inf") for x in row] for row in matrix]
         ans = 0
         n_col = len(matrix[0])
         for i in range(len(matrix)):
-            rect = [0] * n_col
-            for row in mat[i:]:
-                rect = list(map(sum, zip(rect, row)))
+            rect: list[float] = [0] * n_col
+            for row in matrix[i:]:
+                for j, x in enumerate(row):
+                    rect[j] += 1 if x == "1" else -float("inf")
                 max_so_far = -float("inf")
                 max_ending_here = 0
                 for x in rect:
