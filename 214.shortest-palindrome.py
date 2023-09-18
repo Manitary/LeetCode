@@ -8,27 +8,26 @@
 # @lc code=start
 
 
-def is_palindrome(s: str) -> bool:
-    if len(s) <= 1:
-        return True
-    i = 0
-    j = len(s) - 1
-    while i < j:
-        if s[i] != s[j]:
-            return False
-        i += 1
-        j -= 1
-    return True
+def kmp(s: str) -> list[int]:
+    ans = [0]
+    for i in range(1, len(s)):
+        t = ans[i - 1]
+        while t > 0 and s[i] != s[t]:
+            t = ans[t - 1]
+        if s[i] == s[t]:
+            t += 1
+        ans.append(t)
+
+    return ans
 
 
 class Solution:
     def shortestPalindrome(self, s: str) -> str:
-        for i in range(len(s), 0, -1):
-            if is_palindrome(s[:i]):
-                if i == len(s):
-                    return s
-                return s[len(s) - 1 : i - 1 : -1] + s
-        return s[::-1] + s[1:]
+        if len(s) <= 1:
+            return s
+        r = s[::-1]
+        new = s + " " + r
+        return r[: len(s) - kmp(new)[-1]] + s
 
 
 # @lc code=end
