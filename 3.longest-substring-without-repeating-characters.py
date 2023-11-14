@@ -9,13 +9,17 @@
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
         ans = 0
-        visited: dict[str, int] = {}
-        for i, c in enumerate(s):
-            if c in visited:
-                ans = max(ans, len(visited))
-                visited = {k: v for k, v in visited.items() if v > visited[c]}
-            visited[c] = i
-        ans = max(ans, len(visited))
+        visited: set[str] = set()
+        left, right = 0, 0
+        while left <= right < len(s):
+            if s[right] in visited:
+                ans = max(ans, right - left)
+                visited.remove(s[left])
+                left += 1
+                continue
+            visited.add(s[right])
+            right += 1
+        ans = max(ans, right - left)
         return ans
 
 
