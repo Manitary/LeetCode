@@ -9,24 +9,20 @@
 class Solution:
     def trap(self, height: list[int]) -> int:
         ans = 0
-        left = 0
-        while left < len(height) - 1:
-            while left < len(height) and height[left] == 0:
+        left, right = 0, len(height) - 1
+        max_left = height[left]
+        max_right = height[right]
+        while left < right:
+            if max_left <= max_right:
                 left += 1
-            if left >= len(height) - 1:
-                break
-            right = left + 1
-            max_floor = height[right]
-            while height[right] < height[left]:
-                right += 1
-                if right == len(height):
-                    break
-                if height[right] > max_floor:
-                    ans += (min(height[right], height[left]) - max_floor) * (
-                        right - left - 1
-                    )
-                    max_floor = height[right]
-            left += 1
+                q = min(max_left, max_right) - height[left]
+                max_left = max(max_left, height[left])
+            else:
+                right -= 1
+                q = min(max_left, max_right) - height[right]
+                max_right = max(max_right, height[right])
+            if q > 0:
+                ans += q
 
         return ans
 
