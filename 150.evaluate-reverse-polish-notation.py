@@ -10,10 +10,7 @@ import operator
 
 
 def new_div(x: int, y: int) -> int:
-    q, r = divmod(x, y)
-    if q < 0 and r:
-        q += 1
-    return q
+    return int(x / y)
 
 
 OP = {
