@@ -6,21 +6,17 @@
 
 
 # @lc code=start
-from collections import defaultdict
 
 
 class Solution:
     def dailyTemperatures(self, temperatures: list[int]) -> list[int]:
+        stack: list[tuple[int, int]] = []
         ans = [0] * len(temperatures)
-        temps: dict[int, list[int]] = defaultdict(list)
         for i, t in enumerate(temperatures):
-            temps[t].append(i)
-            for x, idxs in temps.items():
-                if x >= t:
-                    continue
-                for j in idxs:
-                    ans[j] = i - j
-                temps[x] = []
+            while stack and t > stack[-1][0]:
+                _, idx = stack.pop()
+                ans[idx] = i - idx
+            stack.append((t, i))
 
         return ans
 
