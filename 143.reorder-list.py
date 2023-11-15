@@ -22,24 +22,28 @@ class Solution:
         """
         if not head:
             return
-        stack: list[ListNode] = []
-        while head:
-            stack.append(head)
-            head = head.next
-        left, right = 0, len(stack) - 1
-        while True:
-            if left < right:
-                stack[left].next = stack[right]
-                left += 1
-            else:
-                stack[left].next = None
-                return
-            if left < right:
-                stack[right].next = stack[left]
-                right -= 1
-            else:
-                stack[right].next = None
-                return
+
+        # Find the middle
+        slow, fast = head, head.next
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+
+        # Break the list
+        # If odd length, first half is longer
+        second = slow.next
+        prev = slow.next = None
+        while second:
+            second.next, prev, second = prev, second, second.next
+
+        first, second = head, prev
+        while second:
+            first.next, second.next, first, second = (
+                second,
+                first.next,
+                first.next,
+                second.next,
+            )
 
 
 # @lc code=end
