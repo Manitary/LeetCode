@@ -5,8 +5,8 @@
 #
 
 # @lc code=start
-# from typing import Self
 # Definition for singly-linked list.
+# from typing import Self
 
 
 # class ListNode:
@@ -16,21 +16,18 @@
 
 
 class Solution:
-    def removeNthFromEnd(self, head: ListNode | None, n: int) -> ListNode | None:
-        if not head:
-            return
-        nodes: dict[int, ListNode] = {}
-        i = -1
-        curr = head
-        while curr:
-            i += 1
-            nodes[i] = curr
+    def removeNthFromEnd(self, head: ListNode, n: int) -> ListNode | None:
+        dummy_head = ListNode(next=head)
+        to_remove_prev, curr = dummy_head, head
+        for _ in range(n):
             curr = curr.next
-        t = i + 1 - n
-        if t == 0:
-            return head.next
-        nodes[t - 1].next = None if t == i else nodes[t + 1]
-        return head
+
+        while curr:
+            to_remove_prev, curr = to_remove_prev.next, curr.next
+
+        to_remove_prev.next = to_remove_prev.next.next
+
+        return dummy_head.next
 
 
 # @lc code=end
