@@ -8,16 +8,16 @@
 # @lc code=start
 class Solution:
     def combinationSum(self, candidates: list[int], target: int) -> list[list[int]]:
-        res: list[set[tuple[int, ...]]] = [set() for _ in range(target + 1)]
-        res[0].add(())
-        for i in range(1, target + 1):
-            for c in candidates:
-                if i - c < 0:
-                    continue
-                for elt in res[i - c]:
-                    res[i].add(tuple(sorted(elt + (c,))))
+        def recurse(idx: int, curr: list[int], total: int) -> list[list[int]]:
+            if total == target:
+                return [curr]
+            if idx >= len(candidates) or total > target:
+                return []
+            return recurse(
+                idx, curr + [candidates[idx]], total + candidates[idx]
+            ) + recurse(idx + 1, curr, total)
 
-        return [list(x) for x in res[-1]]
+        return recurse(0, [], 0)
 
 
 # @lc code=end
