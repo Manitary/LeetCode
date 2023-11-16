@@ -7,30 +7,15 @@
 
 # @lc code=start
 class Solution:
-    def insert(
-        self, intervals: list[list[int]], newInterval: list[int]
-    ) -> list[list[int]]:
-        ans: list[list[int]] = []
-        for i, old_interval in enumerate(intervals):
-            if newInterval[1] < old_interval[0]:
-                ans.append(newInterval)
-                ans.extend(intervals[i:])
-                return ans
-            if old_interval[1] < newInterval[0]:
-                ans.append(old_interval)
-                continue
-            newInterval = [
-                min(newInterval[0], old_interval[0]),
-                max(newInterval[1], old_interval[1]),
-            ]
-        ans.append(newInterval)
-
-        return ans
-
     def merge(self, intervals: list[list[int]]) -> list[list[int]]:
-        ans: list[list[int]] = []
-        for interval in intervals:
-            ans = self.insert(ans, interval)
+        intervals.sort()
+        ans = [intervals[0]]
+        for interval in intervals[1:]:
+            if interval[0] > ans[-1][1]:
+                ans.append(interval)
+                continue
+            ans[-1] = [min(ans[-1][0], interval[0]), max(ans[-1][1], interval[1])]
+
         return ans
 
 
