@@ -8,12 +8,24 @@
 # @lc code=start
 class Solution:
     def lengthOfLIS(self, nums: list[int]) -> int:
-        longest: dict[int, int] = {}
-        for i, n in enumerate(reversed(nums), 1):
-            longest[i] = 1 + max(
-                (longest[j] for j in range(1, i) if nums[-j] > n), default=0
-            )
-        return max(longest.values())
+        def find(l: list[int], n: int) -> int:
+            left, right = 0, len(l) - 1
+            while left < right:
+                middle = (left + right) // 2
+                if l[middle] < n:
+                    left = middle + 1
+                else:
+                    right = middle
+            return left
+
+        ans: list[int] = []
+        for n in nums:
+            if not ans or ans[-1] < n:
+                ans.append(n)
+            else:
+                idx = find(ans, n)
+                ans[idx] = n
+        return len(ans)
 
 
 # @lc code=end
